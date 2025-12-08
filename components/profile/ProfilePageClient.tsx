@@ -7,7 +7,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { ProfileHeader } from "./ProfileHeader";
 import { PostGrid } from "./PostGrid";
 import { UserWithStats, PostWithUser } from "@/lib/types";

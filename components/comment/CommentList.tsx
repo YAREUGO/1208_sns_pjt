@@ -12,7 +12,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MoreHorizontal, Trash2 } from "lucide-react";
+// MoreHorizontal, Trash2는 향후 사용 예정
 import { CommentWithUser } from "@/lib/types";
 import { useUser } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";

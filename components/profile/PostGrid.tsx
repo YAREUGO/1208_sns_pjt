@@ -16,14 +16,14 @@ import Image from "next/image";
 import { PostWithUser } from "@/lib/types";
 import { PostModal } from "@/components/post/PostModal";
 import { Heart, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
+// cn은 향후 사용 예정
 
 interface PostGridProps {
   posts: PostWithUser[];
   userId?: string;
 }
 
-export function PostGrid({ posts, userId }: PostGridProps) {
+export function PostGrid({ posts }: PostGridProps) {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   if (posts.length === 0) {

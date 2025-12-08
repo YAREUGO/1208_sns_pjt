@@ -12,7 +12,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { X, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { PostWithUser } from "@/lib/types";
 import { CommentList } from "@/components/comment/CommentList";
@@ -20,7 +20,6 @@ import { CommentForm } from "@/components/comment/CommentForm";
 import { LikeButton } from "./LikeButton";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
-import { useUser } from "@clerk/nextjs";
 
 interface PostModalProps {
   postId: string;
@@ -34,7 +33,7 @@ export function PostModal({ postId, open, onOpenChange }: PostModalProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(0);
   const [commentKey, setCommentKey] = useState(0);
-  const { user } = useUser();
+  // user는 향후 사용 예정
 
   useEffect(() => {
     if (!open || !postId) return;

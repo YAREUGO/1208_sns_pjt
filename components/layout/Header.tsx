@@ -15,7 +15,7 @@ import { useUser } from "@clerk/nextjs";
 import { Heart, Send, User } from "lucide-react";
 
 export function Header() {
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
 
   return (
     <header className="md:hidden fixed top-0 left-0 right-0 h-[60px] bg-white/80 backdrop-blur-md border-b border-instagram-border z-50 shadow-sm">

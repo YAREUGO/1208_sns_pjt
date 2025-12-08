@@ -33,7 +33,7 @@ interface BottomNavItem {
 
 export function BottomNav() {
   const pathname = usePathname();
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const navItems: BottomNavItem[] = [

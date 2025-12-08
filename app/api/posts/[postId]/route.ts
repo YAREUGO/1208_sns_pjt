@@ -74,6 +74,18 @@ export async function GET(
     };
 
     // 데이터 변환: PostWithUser 타입으로 변환
+    // .single()을 사용했으므로 users는 단일 객체입니다
+    const userData = Array.isArray(postData.users) 
+      ? postData.users[0] 
+      : postData.users;
+    
+    if (!userData) {
+      return NextResponse.json(
+        { error: "사용자 정보를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
     const post: PostWithUser = {
       id: postData.id,
       user_id: postData.user_id,
@@ -84,10 +96,10 @@ export async function GET(
       likes_count: stats.likes_count || 0,
       comments_count: stats.comments_count || 0,
       user: {
-        id: postData.users.id,
-        clerk_id: postData.users.clerk_id,
-        name: postData.users.name,
-        created_at: postData.users.created_at,
+        id: userData.id,
+        clerk_id: userData.clerk_id,
+        name: userData.name,
+        created_at: userData.created_at,
       },
     };
 
@@ -135,8 +147,20 @@ export async function DELETE(
       );
     }
 
+    // users 데이터 처리 (배열일 수도 있고 객체일 수도 있음)
+    const userData = Array.isArray(postData.users) 
+      ? postData.users[0] 
+      : postData.users;
+
+    if (!userData || !userData.clerk_id) {
+      return NextResponse.json(
+        { error: "사용자 정보를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
     // 본인 게시물인지 확인
-    if (postData.users.clerk_id !== clerkUserId) {
+    if (userData.clerk_id !== clerkUserId) {
       return NextResponse.json(
         { error: "본인의 게시물만 삭제할 수 있습니다." },
         { status: 403 }

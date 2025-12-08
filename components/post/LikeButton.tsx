@@ -10,7 +10,7 @@
 
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 

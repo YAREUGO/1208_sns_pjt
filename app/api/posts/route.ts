@@ -19,7 +19,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getServiceRoleClient } from "@/lib/supabase/service-role";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { PostWithUser } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
@@ -216,7 +216,7 @@ export async function POST(request: NextRequest) {
 
     // Supabase Storage에 이미지 업로드
     const storageBucket = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "uploads";
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from(storageBucket)
       .upload(filePath, imageFile, {
         cacheControl: "3600",

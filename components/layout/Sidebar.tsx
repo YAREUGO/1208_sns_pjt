@@ -38,7 +38,7 @@ interface SidebarItem {
 
 export function Sidebar() {
   const pathname = usePathname();
-  const { user, isLoaded } = useUser();
+  const { user } = useUser();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // 메뉴 항목 정의

@@ -22,7 +22,7 @@ import { ko } from "date-fns/locale";
 import { LikeButton } from "./LikeButton";
 import { CommentList } from "@/components/comment/CommentList";
 import { CommentForm } from "@/components/comment/CommentForm";
-import { cn } from "@/lib/utils";
+// cn은 향후 사용 예정
 import { useUser } from "@clerk/nextjs";
 import {
   DropdownMenu,

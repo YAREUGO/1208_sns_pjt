@@ -13,7 +13,7 @@
 "use client";
 
 import { UserWithStats } from "@/lib/types";
-import { useUser } from "@clerk/nextjs";
+// useUser는 향후 사용 예정
 import { Button } from "@/components/ui/button";
 import { FollowButton } from "./FollowButton";
 

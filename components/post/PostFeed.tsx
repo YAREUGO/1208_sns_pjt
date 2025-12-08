@@ -86,13 +86,14 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
         observer.unobserve(currentTarget);
       }
     };
-  }, [hasMore, loading, offset, userId]);
+  }, [hasMore, loading, offset, userId, fetchPosts]);
 
   // 초기 데이터가 없으면 첫 로드
   useEffect(() => {
     if (initialPosts.length === 0 && !loading && hasMore) {
       fetchPosts(0);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLike = useCallback((postId: string) => {
@@ -109,10 +110,10 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
     );
   }, []);
 
-  const handleComment = useCallback((postId: string) => {
+  const handleComment = useCallback(() => {
     // 댓글 작성 후 피드 새로고침
     fetchPosts(0);
-  }, []);
+  }, [fetchPosts]);
 
   const handlePostClick = useCallback((postId: string) => {
     setSelectedPostId(postId);

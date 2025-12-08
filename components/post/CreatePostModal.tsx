@@ -169,6 +169,7 @@ export function CreatePostModal({
             <div className="space-y-4">
               {/* 이미지 미리보기 */}
               <div className="relative w-full aspect-square bg-gray-100 rounded-lg overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={preview}
                   alt="미리보기"

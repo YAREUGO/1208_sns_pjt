@@ -34,7 +34,7 @@ async function InstrumentsData() {
       <div className="p-4 bg-yellow-50 border border-yellow-200 rounded">
         <p className="text-yellow-800">데이터가 없습니다.</p>
         <p className="text-yellow-600 text-sm mt-1">
-          Supabase Dashboard에서 'instruments' 테이블을 생성하고 샘플 데이터를 추가하세요.
+          Supabase Dashboard에서 &apos;instruments&apos; 테이블을 생성하고 샘플 데이터를 추가하세요.
         </p>
       </div>
     );
