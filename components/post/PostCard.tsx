@@ -82,19 +82,16 @@ export const PostCard = memo(function PostCard({ post, onLike, onComment, onClic
     [post.created_at]
   );
 
-  // 좋아요 수 포맷팅 (useMemo로 최적화)
-  const formatLikes = useMemo(
-    () => (count: number) => {
-      if (count >= 1000000) {
-        return `${(count / 1000000).toFixed(1)}M`;
-      }
-      if (count >= 1000) {
-        return `${(count / 1000).toFixed(1)}K`;
-      }
-      return count.toString();
-    },
-    []
-  );
+  // 좋아요 수 포맷팅 함수
+  const formatLikes = (count: number) => {
+    if (count >= 1000000) {
+      return `${(count / 1000000).toFixed(1)}M`;
+    }
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}K`;
+    }
+    return count.toString();
+  };
 
   // 게시물 삭제
   const handleDelete = async () => {
