@@ -25,6 +25,7 @@
 - [ ] `AGENTS.md` 파일
 
 
+
 # 📋 Mini Instagram - 개발 TODO 리스트
 
 ## 1. 기본 세팅

@@ -62,7 +62,7 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
         setLoading(false);
       }
     },
-    [loading, userId]
+    [loading, userId],
   );
 
   // Intersection Observer로 무한 스크롤 구현
