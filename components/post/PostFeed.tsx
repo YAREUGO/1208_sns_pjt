@@ -10,7 +10,7 @@
 
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { PostCard } from "./PostCard";
 import { PostCardSkeleton } from "./PostCardSkeleton";
 import { PostModal } from "./PostModal";
@@ -92,7 +92,7 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
     }
   }, []);
 
-  const handleLike = (postId: string) => {
+  const handleLike = useCallback((postId: string) => {
     // 좋아요 상태는 LikeButton에서 관리
     // 필요시 피드의 게시물 좋아요 수 업데이트
     setPosts((prev) =>
@@ -104,21 +104,21 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
         return post;
       }),
     );
-  };
+  }, []);
 
-  const handleComment = (postId: string) => {
+  const handleComment = useCallback((postId: string) => {
     // 댓글 작성 후 피드 새로고침
     fetchPosts(0);
-  };
+  }, []);
 
-  const handlePostClick = (postId: string) => {
+  const handlePostClick = useCallback((postId: string) => {
     setSelectedPostId(postId);
-  };
+  }, []);
 
-  const handleDelete = (postId: string) => {
+  const handleDelete = useCallback((postId: string) => {
     // 피드에서 게시물 제거
     setPosts((prev) => prev.filter((post) => post.id !== postId));
-  };
+  }, []);
 
   return (
     <div className="space-y-4">

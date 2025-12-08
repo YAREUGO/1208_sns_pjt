@@ -13,7 +13,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useMemo } from "react";
 import Image from "next/image";
 import { MoreHorizontal, MessageCircle, Send, Bookmark, Heart, Trash2 } from "lucide-react";
 import { PostWithUser } from "@/lib/types";
@@ -39,7 +39,7 @@ interface PostCardProps {
   onDelete?: (postId: string) => void;
 }
 
-export function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCardProps) {
+export const PostCard = memo(function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCardProps) {
   const [showFullCaption, setShowFullCaption] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count);
@@ -66,26 +66,35 @@ export function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCar
     checkLikeStatus();
   }, [post.id]);
 
-  // 캡션 2줄 초과 여부 확인
-  const captionLines = post.caption?.split("\n") || [];
-  const shouldTruncate = captionLines.length > 2 || (post.caption?.length || 0) > 100;
+  // 캡션 2줄 초과 여부 확인 (useMemo로 최적화)
+  const shouldTruncate = useMemo(() => {
+    const captionLines = post.caption?.split("\n") || [];
+    return captionLines.length > 2 || (post.caption?.length || 0) > 100;
+  }, [post.caption]);
 
-  // 시간 포맷팅
-  const timeAgo = formatDistanceToNow(new Date(post.created_at), {
-    addSuffix: true,
-    locale: ko,
-  });
+  // 시간 포맷팅 (useMemo로 최적화)
+  const timeAgo = useMemo(
+    () =>
+      formatDistanceToNow(new Date(post.created_at), {
+        addSuffix: true,
+        locale: ko,
+      }),
+    [post.created_at]
+  );
 
-  // 좋아요 수 포맷팅
-  const formatLikes = (count: number) => {
-    if (count >= 1000000) {
-      return `${(count / 1000000).toFixed(1)}M`;
-    }
-    if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)}K`;
-    }
-    return count.toString();
-  };
+  // 좋아요 수 포맷팅 (useMemo로 최적화)
+  const formatLikes = useMemo(
+    () => (count: number) => {
+      if (count >= 1000000) {
+        return `${(count / 1000000).toFixed(1)}M`;
+      }
+      if (count >= 1000) {
+        return `${(count / 1000).toFixed(1)}K`;
+      }
+      return count.toString();
+    },
+    []
+  );
 
   // 게시물 삭제
   const handleDelete = async () => {
@@ -297,7 +306,8 @@ export function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCar
           onComment?.(post.id);
         }}
       />
-    </article>
-  );
-}
+      </article>
+    );
+  }
+});
 
