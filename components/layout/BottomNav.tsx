@@ -116,8 +116,10 @@ export function BottomNav() {
         open={isCreateModalOpen}
         onOpenChange={setIsCreateModalOpen}
         onSuccess={() => {
-          // 게시물 작성 성공 시 피드 새로고침
-          window.location.reload();
+          // 게시물 작성 성공 시 홈으로 이동하여 새 게시물 확인
+          if (typeof window !== "undefined") {
+            window.location.href = "/";
+          }
         }}
       />
     </nav>

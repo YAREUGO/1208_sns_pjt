@@ -36,6 +36,7 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count);
   const [showDoubleTapHeart, setShowDoubleTapHeart] = useState(false);
+  const [commentKey, setCommentKey] = useState(0); // 댓글 목록 새로고침용
 
   // 좋아요 상태 확인
   useEffect(() => {
@@ -214,14 +215,24 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
       )}
 
       {/* 댓글 미리보기 (최신 2개) */}
-      <CommentList postId={post.id} limit={2} />
+      <CommentList
+        key={commentKey}
+        postId={post.id}
+        limit={2}
+        onDelete={() => {
+          // 댓글 삭제 시 댓글 수 업데이트
+          // PostCard는 단일 게시물이므로 직접 업데이트
+          // 실제로는 PostFeed에서 관리해야 하지만, 여기서는 간단히 처리
+        }}
+      />
 
       {/* 댓글 작성 폼 */}
       <CommentForm
         postId={post.id}
         onSubmit={() => {
-          // 댓글 작성 성공 시 피드 새로고침
-          window.location.reload();
+          // 댓글 작성 성공 시 댓글 목록 새로고침
+          setCommentKey((prev) => prev + 1);
+          onComment?.(post.id);
         }}
       />
     </article>

@@ -147,8 +147,12 @@ export function Sidebar() {
         open={isCreateModalOpen}
         onOpenChange={setIsCreateModalOpen}
         onSuccess={() => {
-          // 게시물 작성 성공 시 피드 새로고침 (페이지 리로드)
-          window.location.reload();
+          // 게시물 작성 성공 시 홈으로 이동하여 새 게시물 확인
+          // 실제로는 PostFeed에서 상태 업데이트가 필요하지만,
+          // 현재 구조상 페이지 리로드가 가장 간단한 방법
+          if (typeof window !== "undefined") {
+            window.location.href = "/";
+          }
         }}
       />
     </aside>
