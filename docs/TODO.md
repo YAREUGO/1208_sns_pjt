@@ -71,7 +71,7 @@
   - [x] 액션 버튼 (좋아요, 댓글, 공유, 북마크)
   - [x] 좋아요 수 표시
   - [x] 캡션 (사용자명 Bold + 내용, 2줄 초과 시 "... 더 보기")
-  - [ ] 댓글 미리보기 (최신 2개) - 댓글 API 구현 후 완료
+  - [x] 댓글 미리보기 (최신 2개) - CommentList로 구현 완료
 - [x] `components/post/PostCardSkeleton.tsx`
   - [x] 로딩 UI (Skeleton + Shimmer 효과)
 - [x] `components/post/PostFeed.tsx`
@@ -190,7 +190,8 @@
 
 ## 10. 게시물 삭제
 
-- [ ] `app/api/posts/[postId]/route.ts`
+- [x] `app/api/posts/[postId]/route.ts`
+  - [x] GET: 특정 게시물 조회 (이미 구현)
   - [ ] DELETE: 게시물 삭제
   - [ ] 본인만 삭제 가능 (인증 검증)
   - [ ] Supabase Storage에서 이미지 삭제
@@ -201,16 +202,16 @@
 
 ## 11. 반응형 및 애니메이션
 
-- [ ] 반응형 브레이크포인트 적용
-  - [ ] Mobile (< 768px): BottomNav, Header 표시
-  - [ ] Tablet (768px ~ 1023px): Icon-only Sidebar
-  - [ ] Desktop (1024px+): Full Sidebar
-- [ ] 좋아요 애니메이션
-  - [ ] 클릭 시 scale(1.3) → scale(1) (0.15초)
-  - [ ] 더블탭 시 큰 하트 fade in/out (1초)
-- [ ] 로딩 상태
-  - [ ] Skeleton UI (PostCardSkeleton)
-  - [ ] Shimmer 효과
+- [x] 반응형 브레이크포인트 적용
+  - [x] Mobile (< 768px): BottomNav, Header 표시
+  - [x] Tablet (768px ~ 1023px): Icon-only Sidebar
+  - [x] Desktop (1024px+): Full Sidebar
+- [x] 좋아요 애니메이션
+  - [x] 클릭 시 scale(1.3) → scale(1) (0.15초)
+  - [x] 더블탭 시 큰 하트 fade in/out (1초)
+- [x] 로딩 상태
+  - [x] Skeleton UI (PostCardSkeleton)
+  - [x] Shimmer 효과
 
 ## 12. 에러 핸들링 및 최적화
 
@@ -218,9 +219,9 @@
   - [ ] API 에러 처리
   - [ ] 사용자 친화적 에러 메시지
   - [ ] 네트워크 에러 처리
-- [ ] 이미지 최적화
-  - [ ] Next.js Image 컴포넌트 사용
-  - [ ] Lazy loading
+- [x] 이미지 최적화
+  - [x] Next.js Image 컴포넌트 사용
+  - [ ] Lazy loading (Next.js Image 기본 지원)
 - [ ] 성능 최적화
   - [ ] React.memo 적용 (필요한 컴포넌트)
   - [ ] useMemo, useCallback 활용
