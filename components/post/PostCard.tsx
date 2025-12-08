@@ -20,6 +20,8 @@ import { PostWithUser } from "@/lib/types";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { LikeButton } from "./LikeButton";
+import { CommentList } from "@/components/comment/CommentList";
+import { CommentForm } from "@/components/comment/CommentForm";
 import { cn } from "@/lib/utils";
 
 interface PostCardProps {
@@ -209,17 +211,16 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
       )}
 
       {/* 댓글 미리보기 (최신 2개) */}
-      {post.comments_count > 0 && (
-        <div className="px-4 pb-4">
-          <button
-            onClick={() => onComment?.(post.id)}
-            className="text-instagram-text-secondary text-sm hover:opacity-70"
-          >
-            댓글 {post.comments_count}개 모두 보기
-          </button>
-          {/* TODO: 실제 댓글 2개 표시 */}
-        </div>
-      )}
+      <CommentList postId={post.id} limit={2} />
+
+      {/* 댓글 작성 폼 */}
+      <CommentForm
+        postId={post.id}
+        onSubmit={() => {
+          // 댓글 작성 성공 시 피드 새로고침
+          window.location.reload();
+        }}
+      />
     </article>
   );
 }
