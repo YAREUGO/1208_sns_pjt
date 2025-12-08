@@ -10,6 +10,7 @@
 
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -21,6 +22,7 @@ import {
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CreatePostModal } from "@/components/post/CreatePostModal";
 
 interface BottomNavItem {
   icon: React.ComponentType<{ className?: string }>;
@@ -32,6 +34,7 @@ interface BottomNavItem {
 export function BottomNav() {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const navItems: BottomNavItem[] = [
     {
@@ -46,11 +49,10 @@ export function BottomNav() {
     },
     {
       icon: PlusSquare,
-      href: "#", // 모달 열기 (향후 구현)
+      href: "#",
       label: "만들기",
       onClick: () => {
-        // TODO: CreatePostModal 열기
-        console.log("게시물 작성 모달 열기");
+        setIsCreateModalOpen(true);
       },
     },
     {
@@ -108,6 +110,16 @@ export function BottomNav() {
           );
         })}
       </div>
+
+      {/* 게시물 작성 모달 */}
+      <CreatePostModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onSuccess={() => {
+          // 게시물 작성 성공 시 피드 새로고침
+          window.location.reload();
+        }}
+      />
     </nav>
   );
 }

@@ -9,11 +9,17 @@
  * - post_stats 뷰를 사용하여 좋아요/댓글 수 포함
  * - 사용자 정보 조인
  *
- * POST: 게시물 생성 (향후 구현)
+ * POST: 게시물 생성
+ * - 이미지 파일 검증 (최대 5MB)
+ * - Supabase Storage 업로드
+ * - posts 테이블에 데이터 저장
+ * - 인증 검증 (Clerk)
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getServiceRoleClient } from "@/lib/supabase/service-role";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 import { PostWithUser } from "@/lib/types";
 
 export async function GET(request: NextRequest) {
@@ -122,6 +128,138 @@ export async function GET(request: NextRequest) {
       data: posts,
       count: posts.length,
       hasMore: posts.length === limit, // 더 있는지 여부 (간단한 체크)
+    });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return NextResponse.json(
+      { error: "서버 오류가 발생했습니다." },
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * POST: 게시물 생성
+ */
+export async function POST(request: NextRequest) {
+  try {
+    // Clerk 인증 확인
+    const { userId: clerkUserId } = await auth();
+
+    if (!clerkUserId) {
+      return NextResponse.json(
+        { error: "인증이 필요합니다." },
+        { status: 401 }
+      );
+    }
+
+    // FormData 파싱
+    const formData = await request.formData();
+    const imageFile = formData.get("image") as File;
+    const caption = formData.get("caption") as string | null;
+
+    if (!imageFile) {
+      return NextResponse.json(
+        { error: "이미지 파일이 필요합니다." },
+        { status: 400 }
+      );
+    }
+
+    // 파일 크기 검증 (최대 5MB)
+    if (imageFile.size > 5 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "파일 크기는 5MB 이하여야 합니다." },
+        { status: 400 }
+      );
+    }
+
+    // 이미지 파일 타입 검증
+    if (!imageFile.type.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "이미지 파일만 업로드할 수 있습니다." },
+        { status: 400 }
+      );
+    }
+
+    // 캡션 길이 검증 (최대 2,200자)
+    if (caption && caption.length > 2200) {
+      return NextResponse.json(
+        { error: "캡션은 최대 2,200자까지 입력할 수 있습니다." },
+        { status: 400 }
+      );
+    }
+
+    // Supabase에서 사용자 ID 찾기
+    const supabase = getServiceRoleClient();
+    const { data: userData, error: userError } = await supabase
+      .from("users")
+      .select("id")
+      .eq("clerk_id", clerkUserId)
+      .single();
+
+    if (userError || !userData) {
+      console.error("User not found in Supabase:", userError);
+      return NextResponse.json(
+        { error: "사용자를 찾을 수 없습니다." },
+        { status: 404 }
+      );
+    }
+
+    const userId = userData.id;
+
+    // 파일명 생성 (타임스탬프 + 랜덤 문자열)
+    const fileExt = imageFile.name.split(".").pop() || "jpg";
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(7)}.${fileExt}`;
+    const filePath = `posts/${userId}/${fileName}`;
+
+    // Supabase Storage에 이미지 업로드
+    const storageBucket = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "uploads";
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(storageBucket)
+      .upload(filePath, imageFile, {
+        cacheControl: "3600",
+        upsert: false,
+      });
+
+    if (uploadError) {
+      console.error("Error uploading image:", uploadError);
+      return NextResponse.json(
+        { error: "이미지 업로드에 실패했습니다." },
+        { status: 500 }
+      );
+    }
+
+    // 공개 URL 가져오기
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from(storageBucket).getPublicUrl(filePath);
+
+    // posts 테이블에 데이터 저장
+    const { data: postData, error: postError } = await supabase
+      .from("posts")
+      .insert({
+        user_id: userId,
+        image_url: publicUrl,
+        caption: caption || null,
+      })
+      .select()
+      .single();
+
+    if (postError) {
+      console.error("Error creating post:", postError);
+      // 업로드된 이미지 삭제 시도
+      await supabase.storage.from(storageBucket).remove([filePath]);
+      return NextResponse.json(
+        { error: "게시물 생성에 실패했습니다." },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json({
+      success: true,
+      post: postData,
     });
   } catch (error) {
     console.error("Unexpected error:", error);

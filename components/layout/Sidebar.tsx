@@ -16,6 +16,7 @@
 
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -26,6 +27,7 @@ import {
   User,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CreatePostModal } from "@/components/post/CreatePostModal";
 
 interface SidebarItem {
   icon: React.ComponentType<{ className?: string }>;
@@ -37,6 +39,7 @@ interface SidebarItem {
 export function Sidebar() {
   const pathname = usePathname();
   const { user, isLoaded } = useUser();
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   // 메뉴 항목 정의
   const menuItems: SidebarItem[] = [
@@ -53,10 +56,9 @@ export function Sidebar() {
     {
       icon: PlusSquare,
       label: "만들기",
-      href: "#", // 모달 열기 (향후 구현)
+      href: "#",
       onClick: () => {
-        // TODO: CreatePostModal 열기
-        console.log("게시물 작성 모달 열기");
+        setIsCreateModalOpen(true);
       },
     },
     {
@@ -139,6 +141,16 @@ export function Sidebar() {
           );
         })}
       </div>
+
+      {/* 게시물 작성 모달 */}
+      <CreatePostModal
+        open={isCreateModalOpen}
+        onOpenChange={setIsCreateModalOpen}
+        onSuccess={() => {
+          // 게시물 작성 성공 시 피드 새로고침 (페이지 리로드)
+          window.location.reload();
+        }}
+      />
     </aside>
   );
 }
