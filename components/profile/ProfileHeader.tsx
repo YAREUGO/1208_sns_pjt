@@ -15,23 +15,21 @@
 import { UserWithStats } from "@/lib/types";
 import { useUser } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { FollowButton } from "./FollowButton";
 
 interface ProfileHeaderProps {
   user: UserWithStats;
   isOwnProfile?: boolean;
   isFollowing?: boolean;
-  onFollowToggle?: () => void;
+  onFollowChange?: (following: boolean) => void;
 }
 
 export function ProfileHeader({
   user,
   isOwnProfile = false,
   isFollowing = false,
-  onFollowToggle,
+  onFollowChange,
 }: ProfileHeaderProps) {
-  const { user: clerkUser } = useUser();
-
   // 통계 포맷팅
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
@@ -71,17 +69,19 @@ export function ProfileHeader({
               프로필 편집
             </Button>
           ) : (
-            <Button
-              onClick={onFollowToggle}
-              className={cn(
-                "w-full md:w-auto font-instagram-semibold",
-                isFollowing
-                  ? "bg-gray-200 text-instagram-text-primary hover:bg-gray-300"
-                  : "bg-instagram-blue text-white hover:bg-instagram-blue/90"
-              )}
-            >
-              {isFollowing ? "팔로잉" : "팔로우"}
-            </Button>
+            <FollowButton
+              userId={user.clerk_id}
+              initialFollowing={isFollowing}
+              onFollowChange={(following) => {
+                onFollowChange?.(following);
+                // 통계 업데이트 (낙관적 업데이트)
+                if (following) {
+                  user.followers_count += 1;
+                } else {
+                  user.followers_count = Math.max(0, user.followers_count - 1);
+                }
+              }}
+            />
           )}
         </div>
 

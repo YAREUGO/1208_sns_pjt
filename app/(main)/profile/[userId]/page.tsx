@@ -10,8 +10,7 @@
  */
 
 import { Suspense } from "react";
-import { ProfileHeader } from "@/components/profile/ProfileHeader";
-import { PostGrid } from "@/components/profile/PostGrid";
+import { ProfilePageClient } from "@/components/profile/ProfilePageClient";
 import { createClient } from "@/lib/supabase/server";
 import { auth } from "@clerk/nextjs/server";
 import { UserWithStats, PostWithUser } from "@/lib/types";
@@ -172,16 +171,11 @@ async function ProfileData({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="bg-instagram-background min-h-screen">
-      <ProfileHeader
-        user={user}
-        isOwnProfile={isOwnProfile}
-        isFollowing={isFollowing}
-      />
-      <div className="border-t border-instagram-border mt-4">
-        <PostGrid posts={posts} userId={user.id} />
-      </div>
-    </div>
+    <ProfilePageClient
+      initialUser={user}
+      initialPosts={posts}
+      initialIsFollowing={isFollowing}
+    />
   );
 }
 
