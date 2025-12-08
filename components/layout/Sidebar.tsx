@@ -64,7 +64,7 @@ export function Sidebar() {
     {
       icon: User,
       label: "프로필",
-      href: user?.id ? `/profile/${user.id}` : "/profile",
+      href: user?.id ? `/profile/${user.id}` : "/sign-in",
     },
   ];
 

@@ -70,7 +70,7 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
           fetchPosts(offset);
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     const currentTarget = observerTarget.current;
@@ -102,7 +102,7 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
           return post;
         }
         return post;
-      })
+      }),
     );
   };
 
