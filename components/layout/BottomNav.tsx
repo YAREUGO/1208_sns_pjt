@@ -75,7 +75,7 @@ export function BottomNav() {
   };
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-[50px] bg-white border-t border-instagram-border z-50">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 h-[50px] bg-white/80 backdrop-blur-md border-t border-instagram-border z-50 shadow-sm">
       <div className="h-full flex items-center justify-around">
         {navItems.map((item) => {
           const Icon = item.icon;

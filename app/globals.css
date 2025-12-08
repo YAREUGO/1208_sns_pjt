@@ -88,6 +88,7 @@
   /* Instagram 컬러 스키마 */
   --instagram-blue: #0095f6;
   --instagram-background: #fafafa;
+  --instagram-background-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   --instagram-card-background: #ffffff;
   --instagram-border: #dbdbdb;
   --instagram-text-primary: #262626;
@@ -144,8 +145,12 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
     font-family: var(--instagram-font-family);
+    /* 모던한 그라데이션 배경 */
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 50%, #f0f4f8 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
   }
   main {
     @apply max-w-7xl mx-auto pt-16 px-4;
@@ -157,6 +162,16 @@
   .font-instagram-normal { font-weight: var(--instagram-font-normal); }
   .font-instagram-semibold { font-weight: var(--instagram-font-semibold); }
   .font-instagram-bold { font-weight: var(--instagram-font-bold); }
+  
+  /* 모던한 배경 클래스 */
+  .bg-modern-gradient {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 50%, #f0f4f8 100%);
+    background-attachment: fixed;
+  }
+  
+  .bg-modern-gradient-2 {
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+  }
 }
 
 @keyframes shimmer {

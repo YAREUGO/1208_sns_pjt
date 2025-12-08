@@ -10,7 +10,7 @@ import { PostFeed } from "@/components/post/PostFeed";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-instagram-background">
+    <div className="min-h-screen bg-modern-gradient">
       <PostFeed />
     </div>
   );

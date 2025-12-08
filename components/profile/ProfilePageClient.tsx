@@ -42,7 +42,7 @@ export function ProfilePageClient({
   };
 
   return (
-    <div className="bg-instagram-background min-h-screen">
+    <div className="bg-modern-gradient min-h-screen">
       <ProfileHeader
         user={user}
         isOwnProfile={isOwnProfile}

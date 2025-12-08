@@ -11,7 +11,7 @@ import { Home } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-instagram-background px-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-modern-gradient px-4">
       <div className="text-center max-w-md">
         <h1 className="text-6xl font-instagram-bold text-instagram-text-primary mb-4">
           404

@@ -18,7 +18,7 @@ export function Header() {
   const { user, isLoaded } = useUser();
 
   return (
-    <header className="md:hidden fixed top-0 left-0 right-0 h-[60px] bg-white border-b border-instagram-border z-50">
+    <header className="md:hidden fixed top-0 left-0 right-0 h-[60px] bg-white/80 backdrop-blur-md border-b border-instagram-border z-50 shadow-sm">
       <div className="h-full flex items-center justify-between px-4">
         {/* 로고 */}
         <h1 className="text-xl font-instagram-bold text-instagram-text-primary">

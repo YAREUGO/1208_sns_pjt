@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-instagram-background">
+    <div className="min-h-screen bg-modern-gradient">
       {/* Sidebar (Desktop/Tablet) */}
       <Sidebar />
 

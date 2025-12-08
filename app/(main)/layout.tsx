@@ -21,7 +21,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-instagram-background">
+    <div className="min-h-screen bg-modern-gradient">
       {/* Sidebar (Desktop/Tablet) */}
       <Sidebar />
 
