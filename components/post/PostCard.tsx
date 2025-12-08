@@ -13,12 +13,14 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
-import { MoreHorizontal, Heart, MessageCircle, Send, Bookmark } from "lucide-react";
+import { MoreHorizontal, MessageCircle, Send, Bookmark, Heart } from "lucide-react";
 import { PostWithUser } from "@/lib/types";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import { LikeButton } from "./LikeButton";
+import { cn } from "@/lib/utils";
 
 interface PostCardProps {
   post: PostWithUser;
@@ -29,7 +31,24 @@ interface PostCardProps {
 
 export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
   const [showFullCaption, setShowFullCaption] = useState(false);
-  const [isLiked, setIsLiked] = useState(false); // TODO: 실제 좋아요 상태로 교체
+  const [isLiked, setIsLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likes_count);
+  const [showDoubleTapHeart, setShowDoubleTapHeart] = useState(false);
+
+  // 좋아요 상태 확인
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      try {
+        const response = await fetch(`/api/likes/${post.id}`);
+        const data = await response.json();
+        setIsLiked(data.liked || false);
+      } catch (error) {
+        console.error("Error checking like status:", error);
+      }
+    };
+
+    checkLikeStatus();
+  }, [post.id]);
 
   // 캡션 2줄 초과 여부 확인
   const captionLines = post.caption?.split("\n") || [];
@@ -82,6 +101,26 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
       {/* 이미지 영역 (1:1 정사각형) */}
       <div
         className="relative w-full aspect-square bg-gray-100 cursor-pointer"
+        onDoubleClick={() => {
+          // 더블탭 좋아요
+          if (!isLiked) {
+            setShowDoubleTapHeart(true);
+            setTimeout(() => setShowDoubleTapHeart(false), 1000);
+            setIsLiked(true);
+            setLikesCount(likesCount + 1);
+            // API 호출
+            fetch("/api/likes", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ postId: post.id }),
+            }).catch((error) => {
+              // 실패 시 롤백
+              setIsLiked(false);
+              setLikesCount(likesCount);
+              console.error("Error liking post:", error);
+            });
+          }
+        }}
         onClick={() => onClick?.(post.id)}
       >
         <Image
@@ -92,23 +131,27 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
           sizes="(max-width: 768px) 100vw, 630px"
           unoptimized // Supabase Storage URL은 최적화 불필요
         />
+        {/* 더블탭 시 큰 하트 표시 */}
+        {showDoubleTapHeart && (
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <Heart className="w-24 h-24 fill-instagram-like text-instagram-like animate-[fadeInOut_1s_ease-in-out]" />
+          </div>
+        )}
       </div>
 
       {/* 액션 버튼 */}
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-4">
-          <button
-            onClick={() => {
-              setIsLiked(!isLiked);
+          <LikeButton
+            postId={post.id}
+            initialLiked={isLiked}
+            initialLikesCount={likesCount}
+            onLikeChange={(liked, newCount) => {
+              setIsLiked(liked);
+              setLikesCount(newCount);
               onLike?.(post.id);
             }}
-            className="text-instagram-text-primary hover:opacity-70 transition-opacity"
-            aria-label={isLiked ? "좋아요 취소" : "좋아요"}
-          >
-            <Heart
-              className={`w-6 h-6 ${isLiked ? "fill-instagram-like text-instagram-like" : ""}`}
-            />
-          </button>
+          />
           <button
             onClick={() => onComment?.(post.id)}
             className="text-instagram-text-primary hover:opacity-70 transition-opacity"
@@ -132,10 +175,10 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
       </div>
 
       {/* 좋아요 수 */}
-      {post.likes_count > 0 && (
+      {likesCount > 0 && (
         <div className="px-4 pb-2">
           <span className="font-instagram-semibold text-instagram-text-primary text-sm">
-            좋아요 {formatLikes(post.likes_count)}개
+            좋아요 {formatLikes(likesCount)}개
           </span>
         </div>
       )}
