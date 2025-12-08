@@ -29,38 +29,41 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const observerTarget = useRef<HTMLDivElement>(null);
 
-  const fetchPosts = async (currentOffset: number) => {
-    if (loading) return;
+  const fetchPosts = useCallback(
+    async (currentOffset: number) => {
+      if (loading) return;
 
-    setLoading(true);
-    try {
-      const params = new URLSearchParams({
-        limit: "10",
-        offset: currentOffset.toString(),
-      });
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({
+          limit: "10",
+          offset: currentOffset.toString(),
+        });
 
-      if (userId) {
-        params.append("userId", userId);
+        if (userId) {
+          params.append("userId", userId);
+        }
+
+        const response = await fetch(`/api/posts?${params.toString()}`);
+        const data = await response.json();
+
+        if (data.error) {
+          console.error("Error fetching posts:", data.error);
+          return;
+        }
+
+        const newPosts = data.data || [];
+        setPosts((prev) => [...prev, ...newPosts]);
+        setHasMore(data.hasMore || newPosts.length === 10);
+        setOffset(currentOffset + newPosts.length);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      } finally {
+        setLoading(false);
       }
-
-      const response = await fetch(`/api/posts?${params.toString()}`);
-      const data = await response.json();
-
-      if (data.error) {
-        console.error("Error fetching posts:", data.error);
-        return;
-      }
-
-      const newPosts = data.data || [];
-      setPosts((prev) => [...prev, ...newPosts]);
-      setHasMore(data.hasMore || newPosts.length === 10);
-      setOffset(currentOffset + newPosts.length);
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [loading, userId]
+  );
 
   // Intersection Observer로 무한 스크롤 구현
   useEffect(() => {
