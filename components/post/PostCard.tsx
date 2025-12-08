@@ -15,7 +15,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { MoreHorizontal, MessageCircle, Send, Bookmark, Heart } from "lucide-react";
+import { MoreHorizontal, MessageCircle, Send, Bookmark, Heart, Trash2 } from "lucide-react";
 import { PostWithUser } from "@/lib/types";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -23,20 +23,33 @@ import { LikeButton } from "./LikeButton";
 import { CommentList } from "@/components/comment/CommentList";
 import { CommentForm } from "@/components/comment/CommentForm";
 import { cn } from "@/lib/utils";
+import { useUser } from "@clerk/nextjs";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface PostCardProps {
   post: PostWithUser;
   onLike?: (postId: string) => void;
   onComment?: (postId: string) => void;
   onClick?: (postId: string) => void;
+  onDelete?: (postId: string) => void;
 }
 
-export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
+export function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCardProps) {
   const [showFullCaption, setShowFullCaption] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count);
   const [showDoubleTapHeart, setShowDoubleTapHeart] = useState(false);
   const [commentKey, setCommentKey] = useState(0); // 댓글 목록 새로고침용
+  const [isDeleting, setIsDeleting] = useState(false);
+  const { user } = useUser();
+
+  // 본인 게시물인지 확인
+  const isOwnPost = user?.id === post.user.clerk_id;
 
   // 좋아요 상태 확인
   useEffect(() => {
@@ -74,6 +87,33 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
     return count.toString();
   };
 
+  // 게시물 삭제
+  const handleDelete = async () => {
+    if (!confirm("게시물을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const response = await fetch(`/api/posts/${post.id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "게시물 삭제에 실패했습니다.");
+      }
+
+      // 삭제 성공 시 부모 컴포넌트에 알림
+      onDelete?.(post.id);
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      alert(error instanceof Error ? error.message : "게시물 삭제에 실패했습니다.");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <article className="bg-instagram-card-background border border-instagram-border rounded-lg overflow-hidden mb-4">
       {/* 헤더 */}
@@ -93,12 +133,34 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
             <div className="text-instagram-text-secondary text-xs">{timeAgo}</div>
           </div>
         </div>
-        <button
-          className="text-instagram-text-primary hover:opacity-70 transition-opacity"
-          aria-label="더보기"
-        >
-          <MoreHorizontal className="w-5 h-5" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className="text-instagram-text-primary hover:opacity-70 transition-opacity"
+              aria-label="더보기"
+              disabled={isDeleting}
+            >
+              <MoreHorizontal className="w-5 h-5" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48">
+            {isOwnPost && (
+              <DropdownMenuItem
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="text-red-600 focus:text-red-600 focus:bg-red-50 cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                {isDeleting ? "삭제 중..." : "삭제"}
+              </DropdownMenuItem>
+            )}
+            {!isOwnPost && (
+              <DropdownMenuItem disabled className="text-instagram-text-secondary">
+                신고
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
       {/* 이미지 영역 (1:1 정사각형) */}

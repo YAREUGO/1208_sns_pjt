@@ -115,6 +115,11 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
     setSelectedPostId(postId);
   };
 
+  const handleDelete = (postId: string) => {
+    // 피드에서 게시물 제거
+    setPosts((prev) => prev.filter((post) => post.id !== postId));
+  };
+
   return (
     <div className="space-y-4">
       {/* 게시물 목록 */}
@@ -125,6 +130,7 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
           onLike={handleLike}
           onComment={handleComment}
           onClick={handlePostClick}
+          onDelete={handleDelete}
         />
       ))}
 
