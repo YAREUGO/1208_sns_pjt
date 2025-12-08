@@ -41,6 +41,14 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Instagram 컬러 스키마 */
+  --color-instagram-blue: var(--instagram-blue);
+  --color-instagram-background: var(--instagram-background);
+  --color-instagram-card-background: var(--instagram-card-background);
+  --color-instagram-border: var(--instagram-border);
+  --color-instagram-text-primary: var(--instagram-text-primary);
+  --color-instagram-text-secondary: var(--instagram-text-secondary);
+  --color-instagram-like: var(--instagram-like);
 }
 
 :root {
@@ -76,6 +84,25 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  /* Instagram 컬러 스키마 */
+  --instagram-blue: #0095f6;
+  --instagram-background: #fafafa;
+  --instagram-card-background: #ffffff;
+  --instagram-border: #dbdbdb;
+  --instagram-text-primary: #262626;
+  --instagram-text-secondary: #8e8e8e;
+  --instagram-like: #ed4956;
+  
+  /* Instagram 타이포그래피 */
+  --instagram-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --instagram-text-xs: 12px;
+  --instagram-text-sm: 14px;
+  --instagram-text-base: 16px;
+  --instagram-text-xl: 20px;
+  --instagram-font-normal: 400;
+  --instagram-font-semibold: 600;
+  --instagram-font-bold: 700;
 }
 
 .dark {
@@ -118,8 +145,25 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--instagram-font-family);
   }
   main {
     @apply max-w-7xl mx-auto pt-16 px-4;
+  }
+  .text-instagram-xs { font-size: var(--instagram-text-xs); }
+  .text-instagram-sm { font-size: var(--instagram-text-sm); }
+  .text-instagram-base { font-size: var(--instagram-text-base); }
+  .text-instagram-xl { font-size: var(--instagram-text-xl); }
+  .font-instagram-normal { font-weight: var(--instagram-font-normal); }
+  .font-instagram-semibold { font-weight: var(--instagram-font-semibold); }
+  .font-instagram-bold { font-weight: var(--instagram-font-bold); }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
   }
 }
