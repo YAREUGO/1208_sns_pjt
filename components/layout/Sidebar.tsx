@@ -78,11 +78,12 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-white border-r border-instagram-border",
+        "fixed left-0 top-0 h-screen bg-white/80 backdrop-blur-md border-r border-instagram-border",
         "hidden md:flex flex-col",
         "transition-all duration-200",
         // Desktop: 244px, Tablet: 72px
-        "w-[244px] lg:w-[244px] md:w-[72px]"
+        "w-[244px] lg:w-[244px] md:w-[72px]",
+        "shadow-sm"
       )}
     >
       <div className="flex flex-col p-4 gap-1">
