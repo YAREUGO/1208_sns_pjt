@@ -123,7 +123,10 @@ export function PostCard({ post, onLike, onComment, onClick }: PostCardProps) {
             });
           }
         }}
-        onClick={() => onClick?.(post.id)}
+        onClick={() => {
+          // 이미지 클릭 시 상세 모달 열기
+          onClick?.(post.id);
+        }}
       >
         <Image
           src={post.image_url}
