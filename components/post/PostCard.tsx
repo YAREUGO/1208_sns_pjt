@@ -303,8 +303,7 @@ export const PostCard = memo(function PostCard({ post, onLike, onComment, onClic
           onComment?.(post.id);
         }}
       />
-      </article>
-    );
-  }
+    </article>
+  );
 });
 
