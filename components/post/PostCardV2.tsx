@@ -412,7 +412,8 @@ export const PostCardV2 = memo(function PostCardV2({
           <CommentList
             key={commentKey}
             postId={post.id}
-            limit={10}
+            limit={isCommentsExpanded ? undefined : 8}
+            showAll={isCommentsExpanded}
             onDelete={() => {
               setCommentKey((prev) => prev + 1);
             }}

@@ -35,6 +35,7 @@ export function CommentList({
   const [comments, setComments] = useState<CommentWithUser[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingIds, setDeletingIds] = useState<Set<string>>(new Set());
+  const [showAllComments, setShowAllComments] = useState(showAll);
   const { user } = useUser();
 
   useEffect(() => {
@@ -106,7 +107,11 @@ export function CommentList({
     );
   }
 
-  const displayComments = showAll ? comments : comments.slice(-(limit || 2));
+  // limit이 있고 showAll이 false일 때만 제한 적용
+  const hasMoreComments = limit && comments.length > limit && !showAllComments;
+  const displayComments = showAllComments 
+    ? comments 
+    : (limit ? comments.slice(-limit) : comments);
 
   if (displayComments.length === 0) {
     return null;
@@ -116,7 +121,7 @@ export function CommentList({
     <div
       className={cn(
         "px-4 bg-card/30 dark:bg-card/20",
-        showAll && "max-h-[400px] overflow-y-auto"
+        showAllComments && "max-h-[400px] overflow-y-auto"
       )}
     >
       {displayComments.map((comment) => {
@@ -133,22 +138,22 @@ export function CommentList({
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm">
-                <span className="font-instagram-semibold text-foreground dark:text-neutral-200">
+                <span className="font-instagram-semibold text-white dark:text-neutral-100">
                   {comment.user.name}
                 </span>{" "}
-                <span className="text-foreground dark:text-neutral-300">
+                <span className="text-white/90 dark:text-neutral-200">
                   {comment.content}
                 </span>
               </p>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-muted-foreground text-xs">
+                <span className="text-white/70 dark:text-neutral-400 text-xs">
                   {timeAgo}
                 </span>
                 {isOwner && (
                   <button
                     onClick={() => handleDelete(comment.id)}
                     disabled={deletingIds.has(comment.id)}
-                    className="text-muted-foreground text-xs hover:text-destructive transition-colors disabled:opacity-50"
+                    className="text-white/70 dark:text-neutral-400 text-xs hover:text-red-400 transition-colors disabled:opacity-50"
                   >
                     {deletingIds.has(comment.id) ? "삭제 중..." : "삭제"}
                   </button>
@@ -158,6 +163,16 @@ export function CommentList({
           </div>
         );
       })}
+      
+      {/* 더 보기 버튼 */}
+      {hasMoreComments && (
+        <button
+          onClick={() => setShowAllComments(true)}
+          className="text-white/80 dark:text-neutral-300 text-sm mt-2 mb-1 hover:text-white dark:hover:text-neutral-100 transition-colors"
+        >
+          댓글 {comments.length - limit}개 더 보기
+        </button>
+      )}
     </div>
   );
 }

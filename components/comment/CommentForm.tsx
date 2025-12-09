@@ -81,8 +81,8 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
 
   if (!isSignedIn) {
     return (
-      <div className="px-4 py-3 border-t border-border">
-        <p className="text-muted-foreground text-sm text-center">
+      <div className="px-4 py-3 border-t border-border bg-card/50 dark:bg-card/30">
+        <p className="text-white/80 dark:text-neutral-300 text-sm text-center">
           댓글을 작성하려면 로그인이 필요합니다.
         </p>
       </div>
@@ -98,7 +98,7 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="댓글 달기..."
-          className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm text-foreground placeholder:text-muted-foreground"
+          className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm text-white placeholder:text-white/50 dark:text-neutral-200 dark:placeholder:text-neutral-500"
           disabled={submitting}
         />
         <Button
@@ -106,10 +106,10 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
           variant="ghost"
           size="sm"
           disabled={!content.trim() || submitting}
-          className="text-primary hover:text-primary hover:bg-transparent px-2 disabled:opacity-50"
+          className="text-blue-400 hover:text-blue-300 hover:bg-transparent px-2 disabled:opacity-50"
         >
           {submitting ? (
-            "게시 중..."
+            <span className="text-xs">게시 중...</span>
           ) : (
             <Send className="w-5 h-5" />
           )}
