@@ -12,10 +12,14 @@
 
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { UserWithStats } from "@/lib/types";
 // useUser는 향후 사용 예정
 import { Button } from "@/components/ui/button";
 import { FollowButton } from "./FollowButton";
+import { EditProfileModal } from "./EditProfileModal";
 
 interface ProfileHeaderProps {
   user: UserWithStats;
@@ -30,6 +34,9 @@ export function ProfileHeader({
   isFollowing = false,
   onFollowChange,
 }: ProfileHeaderProps) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const router = useRouter();
+
   // 통계 포맷팅
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
@@ -45,10 +52,20 @@ export function ProfileHeader({
     <div className="flex flex-col md:flex-row gap-4 md:gap-8 px-4 py-6 md:py-8">
       {/* 프로필 이미지 */}
       <div className="flex-shrink-0 flex justify-center md:justify-start">
-        <div className="w-[90px] h-[90px] md:w-[150px] md:h-[150px] rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-          <span className="text-3xl md:text-5xl text-instagram-text-secondary font-instagram-bold">
-            {user.name.charAt(0).toUpperCase()}
-          </span>
+        <div className="relative w-[90px] h-[90px] md:w-[150px] md:h-[150px] rounded-full bg-gradient-to-br from-purple-500 to-cyan-500 flex items-center justify-center overflow-hidden border-2 border-border">
+          {user.profile_image_url ? (
+            <Image
+              src={user.profile_image_url}
+              alt={user.name}
+              fill
+              className="object-cover"
+              unoptimized
+            />
+          ) : (
+            <span className="text-3xl md:text-5xl text-white font-instagram-bold">
+              {user.name.charAt(0).toUpperCase()}
+            </span>
+          )}
         </div>
       </div>
 
@@ -62,12 +79,25 @@ export function ProfileHeader({
 
           {/* 버튼 영역 */}
           {isOwnProfile ? (
-            <Button
-              variant="outline"
-              className="w-full md:w-auto border-instagram-border text-instagram-text-primary hover:bg-gray-50"
-            >
-              프로필 편집
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                onClick={() => setIsEditModalOpen(true)}
+                className="w-full md:w-auto border-2 border-foreground/20 bg-background text-foreground hover:bg-foreground/10 hover:border-foreground/30 font-semibold"
+              >
+                프로필 편집
+              </Button>
+              <EditProfileModal
+                open={isEditModalOpen}
+                onOpenChange={setIsEditModalOpen}
+                currentName={user.name}
+                currentProfileImage={user.profile_image_url}
+                onSuccess={() => {
+                  // Next.js router를 사용하여 서버 컴포넌트 데이터 새로고침
+                  router.refresh();
+                }}
+              />
+            </>
           ) : (
             <FollowButton
               userId={user.clerk_id}

@@ -103,12 +103,9 @@ export function BottomNavV2() {
                   className={cn(
                     "w-6 h-6 transition-all duration-200",
                     active
-                      ? "scale-110"
-                      : "scale-100"
+                      ? "scale-110 text-brand-500"
+                      : "scale-100 text-text-secondary"
                   )}
-                  style={{
-                    color: active ? 'var(--color-brand-500)' : 'var(--color-text-secondary)'
-                  }}
                 />
                 {/* Pill progress bar */}
                 {active && (
@@ -152,4 +149,5 @@ export function BottomNavV2() {
     </>
   );
 }
+
 

@@ -287,3 +287,6 @@ USING (
 - [Supabase JavaScript 클라이언트 문서](https://supabase.com/docs/reference/javascript/introduction)
 - [Supabase RLS 가이드](https://supabase.com/docs/guides/auth/row-level-security)
 
+
+
+

@@ -78,18 +78,19 @@ export function Sidebar() {
   return (
     <aside
       className={cn(
-        "fixed left-0 top-0 h-screen bg-white/80 backdrop-blur-md border-r border-instagram-border",
+        "fixed left-0 top-0 h-screen bg-white/90 dark:bg-neutral-900/90 backdrop-blur-md border-r border-border",
         "hidden md:flex flex-col",
         "transition-all duration-200",
         // Desktop: 244px, Tablet: 72px
         "w-[244px] lg:w-[244px] md:w-[72px]",
-        "shadow-sm"
+        "shadow-sm",
+        "z-40"
       )}
     >
       <div className="flex flex-col p-4 gap-1">
         {/* 로고 영역 (Desktop만 표시) */}
         <div className="hidden lg:block mb-8 px-2">
-          <h1 className="text-2xl font-instagram-bold text-instagram-text-primary">
+          <h1 className="text-2xl font-instagram-bold text-foreground dark:text-neutral-100">
             Instagram
           </h1>
         </div>
@@ -99,39 +100,74 @@ export function Sidebar() {
           const Icon = item.icon;
           const active = isActive(item.href);
 
+          // "#" 링크는 버튼으로 처리
+          if (item.href === "#" || item.onClick) {
+            return (
+              <button
+                key={item.href}
+                onClick={item.onClick}
+                className={cn(
+                  "flex items-center gap-4 px-3 py-2 rounded-lg w-full text-left",
+                  "transition-colors duration-150",
+                  "hover:bg-gray-50 dark:hover:bg-neutral-800",
+                  active && "font-instagram-semibold",
+                  // Tablet에서는 텍스트 숨김
+                  "md:justify-center lg:justify-start"
+                )}
+              >
+                <Icon
+                  className={cn(
+                    "w-6 h-6 flex-shrink-0",
+                    active
+                      ? "text-foreground dark:text-neutral-100"
+                      : "text-muted-foreground"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "text-base",
+                    active
+                      ? "text-foreground dark:text-neutral-100"
+                      : "text-muted-foreground",
+                    // Tablet에서는 숨김
+                    "hidden lg:inline"
+                  )}
+                >
+                  {item.label}
+                </span>
+              </button>
+            );
+          }
+
           return (
             <Link
               key={item.href}
               href={item.href}
-              onClick={(e) => {
-                if (item.onClick) {
-                  e.preventDefault();
-                  item.onClick();
-                }
-              }}
               className={cn(
                 "flex items-center gap-4 px-3 py-2 rounded-lg",
                 "transition-colors duration-150",
-                "hover:bg-gray-50",
+                "hover:bg-gray-50 dark:hover:bg-neutral-800",
                 active && "font-instagram-semibold",
                 // Tablet에서는 텍스트 숨김
-                "md:justify-center lg:justify-start"
+                "md:justify-center lg:justify-start",
+                // 클릭 가능하도록 z-index 및 pointer-events 설정
+                "relative z-10"
               )}
             >
               <Icon
                 className={cn(
                   "w-6 h-6 flex-shrink-0",
                   active
-                    ? "text-instagram-text-primary"
-                    : "text-instagram-text-secondary"
+                    ? "text-foreground dark:text-neutral-100"
+                    : "text-muted-foreground"
                 )}
               />
               <span
                 className={cn(
                   "text-base",
                   active
-                    ? "text-instagram-text-primary"
-                    : "text-instagram-text-secondary",
+                    ? "text-foreground dark:text-neutral-100"
+                    : "text-muted-foreground",
                   // Tablet에서는 숨김
                   "hidden lg:inline"
                 )}

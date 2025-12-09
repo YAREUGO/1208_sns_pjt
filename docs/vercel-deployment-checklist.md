@@ -145,3 +145,6 @@ NEXT_PUBLIC_STORAGE_BUCKET=uploads
 - [Supabase 프로덕션 가이드](https://supabase.com/docs/guides/hosting/overview)
 - [Clerk 프로덕션 가이드](https://clerk.com/docs/deployments/overview)
 
+
+
+

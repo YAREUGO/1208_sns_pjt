@@ -13,7 +13,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { PostWithUser } from "@/lib/types";
 import { CommentList } from "@/components/comment/CommentList";
 import { CommentForm } from "@/components/comment/CommentForm";
@@ -90,6 +90,7 @@ export function PostModal({ postId, open, onOpenChange }: PostModalProps) {
     return (
       <Dialog open={open} onOpenChange={onOpenChange}>
         <DialogContent className="sm:max-w-[90vw] md:max-w-[1000px] p-0 h-[90vh] md:h-auto flex items-center justify-center">
+          <DialogTitle className="sr-only">게시물 로딩 중</DialogTitle>
           <Loader2 className="h-10 w-10 animate-spin text-instagram-text-secondary" />
         </DialogContent>
       </Dialog>
@@ -104,6 +105,9 @@ export function PostModal({ postId, open, onOpenChange }: PostModalProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[90vw] md:max-w-[1000px] p-0 h-[90vh] md:h-auto">
+        <DialogTitle className="sr-only">
+          {post.user.name}님의 게시물
+        </DialogTitle>
         <div className="flex flex-col md:flex-row h-full">
           {/* 이미지 영역 (Desktop: 50%, Mobile: 전체) */}
           <div className="relative w-full md:w-1/2 h-64 md:h-[600px] bg-gray-100">

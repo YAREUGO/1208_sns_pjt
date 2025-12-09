@@ -245,3 +245,6 @@ lib/supabase/
 - [Supabase Third-Party Auth 문서](https://supabase.com/docs/guides/auth/third-party/overview)
 - [Supabase RLS 가이드](https://supabase.com/docs/guides/auth/row-level-security)
 
+
+
+

@@ -37,9 +37,10 @@ interface PostCardProps {
   onComment?: (postId: string) => void;
   onClick?: (postId: string) => void;
   onDelete?: (postId: string) => void;
+  index?: number; // LCP 최적화용 (첫 번째 게시물에 priority 적용)
 }
 
-export const PostCard = memo(function PostCard({ post, onLike, onComment, onClick, onDelete }: PostCardProps) {
+export const PostCard = memo(function PostCard({ post, onLike, onComment, onClick, onDelete, index = 0 }: PostCardProps) {
   const [showFullCaption, setShowFullCaption] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count);
@@ -204,6 +205,7 @@ export const PostCard = memo(function PostCard({ post, onLike, onComment, onClic
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 630px"
           unoptimized // Supabase Storage URL은 최적화 불필요
+          priority={index === 0}
         />
         {/* 더블탭 시 큰 하트 표시 */}
         {showDoubleTapHeart && (

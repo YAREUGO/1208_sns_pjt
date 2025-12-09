@@ -110,19 +110,45 @@ export function SidebarV2() {
           const Icon = item.icon;
           const active = isActive(item.href);
 
+          // "#" 링크나 onClick이 있는 경우 버튼으로 처리
+          if (item.href === "#" || item.onClick) {
+            return (
+              <button
+                key={item.href}
+                onClick={item.onClick}
+                className={cn(
+                  "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 w-full text-left",
+                  "hover:scale-[1.02]",
+                  "relative z-10"
+                )}
+                style={{
+                  background: active ? 'var(--color-brand-soft)' : 'transparent',
+                  color: active ? 'var(--color-brand-500)' : 'var(--color-text-secondary)'
+                }}
+              >
+                <Icon className="w-5 h-5 flex-shrink-0" />
+                <span className="font-medium">{item.label}</span>
+                {active && (
+                  <div
+                    className="ml-auto w-1.5 h-1.5 rounded-full"
+                    style={{
+                      background: 'var(--color-brand-500)',
+                      boxShadow: '0 0 8px rgba(138, 77, 255, 0.6)'
+                    }}
+                  />
+                )}
+              </button>
+            );
+          }
+
           return (
             <Link
               key={item.href}
               href={item.href}
-              onClick={(e) => {
-                if (item.onClick) {
-                  e.preventDefault();
-                  item.onClick();
-                }
-              }}
               className={cn(
                 "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200",
-                "hover:scale-[1.02]"
+                "hover:scale-[1.02]",
+                "relative z-10"
               )}
               style={{
                 background: active ? 'var(--color-brand-soft)' : 'transparent',
@@ -168,4 +194,5 @@ export function SidebarV2() {
     </aside>
   );
 }
+
 

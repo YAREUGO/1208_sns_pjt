@@ -215,3 +215,6 @@ export default function SignInPage() {
 - [Clerk Next.js 문서](https://clerk.com/docs/reference/nextjs/overview)
 - [@clerk/localizations 패키지](https://www.npmjs.com/package/@clerk/localizations)
 
+
+
+

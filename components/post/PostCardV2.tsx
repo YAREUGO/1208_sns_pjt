@@ -60,7 +60,7 @@ export const PostCardV2 = memo(function PostCardV2({
   const [isDeleting, setIsDeleting] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLArticleElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
   const { user } = useUser();
 
   const isOwnPost = user?.id === post.user.clerk_id;
@@ -292,6 +292,7 @@ export const PostCardV2 = memo(function PostCardV2({
           className="object-cover"
           sizes="(max-width: 768px) 100vw, 630px"
           unoptimized
+          priority={index === 0}
         />
 
         {/* AI 추천 배지 */}
@@ -431,4 +432,5 @@ export const PostCardV2 = memo(function PostCardV2({
     </article>
   );
 });
+
 

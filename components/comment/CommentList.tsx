@@ -101,7 +101,7 @@ export function CommentList({
   if (loading) {
     return (
       <div className="px-4 py-2">
-        <p className="text-instagram-text-secondary text-sm">댓글을 불러오는 중...</p>
+        <p className="text-muted-foreground text-sm">댓글을 불러오는 중...</p>
       </div>
     );
   }
@@ -115,7 +115,7 @@ export function CommentList({
   return (
     <div
       className={cn(
-        "px-4",
+        "px-4 bg-card/30 dark:bg-card/20",
         showAll && "max-h-[400px] overflow-y-auto"
       )}
     >
@@ -133,22 +133,22 @@ export function CommentList({
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm">
-                <span className="font-instagram-semibold text-instagram-text-primary">
+                <span className="font-instagram-semibold text-foreground dark:text-neutral-200">
                   {comment.user.name}
                 </span>{" "}
-                <span className="text-instagram-text-primary">
+                <span className="text-foreground dark:text-neutral-300">
                   {comment.content}
                 </span>
               </p>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-instagram-text-secondary text-xs">
+                <span className="text-muted-foreground text-xs">
                   {timeAgo}
                 </span>
                 {isOwner && (
                   <button
                     onClick={() => handleDelete(comment.id)}
                     disabled={deletingIds.has(comment.id)}
-                    className="text-instagram-text-secondary text-xs hover:text-instagram-like transition-colors disabled:opacity-50"
+                    className="text-muted-foreground text-xs hover:text-destructive transition-colors disabled:opacity-50"
                   >
                     {deletingIds.has(comment.id) ? "삭제 중..." : "삭제"}
                   </button>

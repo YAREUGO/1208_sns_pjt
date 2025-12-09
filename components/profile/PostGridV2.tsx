@@ -16,7 +16,6 @@ import Image from "next/image";
 import { PostWithUser } from "@/lib/types";
 import { PostModal } from "@/components/post/PostModal";
 import { Heart, MessageCircle, Play } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface PostGridV2Props {
   posts: PostWithUser[];
@@ -189,4 +188,5 @@ export function PostGridV2({ posts }: PostGridV2Props) {
     </>
   );
 }
+
 

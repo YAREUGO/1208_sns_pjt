@@ -55,7 +55,12 @@ export function PostFeed({ userId, initialPosts = [], useV2 = true }: PostFeedPr
         }
 
         const newPosts = data.data || [];
-        setPosts((prev) => [...prev, ...newPosts]);
+        // 중복 제거: 이미 존재하는 게시물은 추가하지 않음
+        setPosts((prev) => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const uniqueNewPosts = newPosts.filter(p => !existingIds.has(p.id));
+          return [...prev, ...uniqueNewPosts];
+        });
         setHasMore(data.hasMore || newPosts.length === 10);
         setOffset(currentOffset + newPosts.length);
       } catch (error) {
@@ -149,6 +154,7 @@ export function PostFeed({ userId, initialPosts = [], useV2 = true }: PostFeedPr
             onComment={handleComment}
             onClick={handlePostClick}
             onDelete={handleDelete}
+            index={index}
           />
         )
       )}

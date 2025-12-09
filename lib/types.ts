@@ -18,6 +18,7 @@ export interface User {
   id: string; // UUID
   clerk_id: string;
   name: string;
+  profile_image_url?: string | null; // 프로필 이미지 URL (Supabase Storage)
   created_at: string; // ISO timestamp
 }
 
@@ -133,4 +134,7 @@ export interface CommentsResponse {
   comments: CommentWithUser[];
   total: number;
 }
+
+
+
 

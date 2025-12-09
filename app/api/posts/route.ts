@@ -212,11 +212,16 @@ export async function POST(request: NextRequest) {
     const fileName = `${Date.now()}-${Math.random()
       .toString(36)
       .substring(7)}.${fileExt}`;
-    const filePath = `posts/${userId}/${fileName}`;
+    // Storage RLS 정책에 맞춰 Clerk user ID를 첫 번째 폴더로 사용
+    // RLS 정책: (storage.foldername(name))[1] = (SELECT auth.jwt()->>'sub')
+    const filePath = `${clerkUserId}/${fileName}`;
 
     // Supabase Storage에 이미지 업로드
     const storageBucket = process.env.NEXT_PUBLIC_STORAGE_BUCKET || "uploads";
-    const { error: uploadError } = await supabase.storage
+    
+    console.log("Uploading to bucket:", storageBucket, "path:", filePath);
+    
+    const { data: uploadData, error: uploadError } = await supabase.storage
       .from(storageBucket)
       .upload(filePath, imageFile, {
         cacheControl: "3600",
@@ -225,11 +230,27 @@ export async function POST(request: NextRequest) {
 
     if (uploadError) {
       console.error("Error uploading image:", uploadError);
+      console.error("Upload details:", {
+        bucket: storageBucket,
+        path: filePath,
+        fileSize: imageFile.size,
+        fileType: imageFile.type,
+        fileName: imageFile.name,
+      });
+      
+      // 더 구체적인 에러 메시지 제공
+      let errorMessage = "이미지 업로드에 실패했습니다.";
+      if (uploadError.message) {
+        errorMessage += ` (${uploadError.message})`;
+      }
+      
       return NextResponse.json(
-        { error: "이미지 업로드에 실패했습니다." },
+        { error: errorMessage, details: uploadError },
         { status: 500 }
       );
     }
+    
+    console.log("Image uploaded successfully:", uploadData);
 
     // 공개 URL 가져오기
     const {

@@ -63,3 +63,6 @@ USING (
 -- 3. DEFAULT auth.jwt()->>'sub'를 사용하면 INSERT 시 자동으로 현재 사용자 ID가 설정됩니다.
 -- 4. 모든 정책은 'authenticated' 역할에만 적용되므로, 로그인한 사용자만 데이터에 접근할 수 있습니다.
 
+
+
+

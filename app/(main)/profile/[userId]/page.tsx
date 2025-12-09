@@ -26,31 +26,76 @@ async function ProfileData({ userId }: { userId: string }) {
   const serviceClient = getServiceRoleClient();
 
   // 사용자 정보 조회 (UUID 또는 clerk_id로 조회)
+  // userId가 "user_"로 시작하면 clerk_id로 간주, 그렇지 않으면 UUID로 간주
   let userData: any = null;
-  const { data: userByUuid } = await serviceClient
-    .from("users")
-    .select("id, clerk_id, name, created_at")
-    .eq("id", userId)
-    .single();
-
-  if (userByUuid) {
-    userData = userByUuid;
-  } else {
-    const { data: userByClerk } = await serviceClient
+  
+  // userId가 "user_"로 시작하면 clerk_id로 조회 (Clerk user ID 형식)
+  // 그렇지 않으면 UUID로 조회
+  // 참고: profile_image_url 컬럼이 아직 추가되지 않은 경우를 위해 기본 필드만 조회
+  const selectFields = "id, clerk_id, name, created_at";
+  
+  if (userId.startsWith("user_") || userId.startsWith("demo_")) {
+    // Clerk user ID 또는 demo user ID 형식인 경우 clerk_id로 직접 조회
+    const { data: userByClerk, error: clerkError } = await serviceClient
       .from("users")
-      .select("id, clerk_id, name, created_at")
+      .select(selectFields)
       .eq("clerk_id", userId)
-      .single();
+      .maybeSingle();
 
     if (userByClerk) {
-      userData = userByClerk;
+      // 사용자를 찾은 경우
+      userData = { ...userByClerk, profile_image_url: null };
+    } else if (clerkError && clerkError.message) {
+      // 실제 에러가 있는 경우에만 에러 로깅
+      console.warn("⚠️ clerk_id 조회 중 문제 발생:", userId, "-", clerkError.message);
+    }
+    // 사용자를 찾지 못한 경우 (에러 없이 null 반환)는 아래에서 처리됨
+  } else {
+    // UUID 형식인 경우 UUID로 조회 시도
+    const { data: userByUuid, error: uuidError } = await serviceClient
+      .from("users")
+      .select(selectFields)
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (userByUuid) {
+      userData = { ...userByUuid, profile_image_url: null };
+    } else if (uuidError && uuidError.message) {
+      // 실제 에러가 있는 경우에만 경고 로깅
+      console.warn("⚠️ UUID 조회 중 문제 발생:", userId, "-", uuidError.message);
+    }
+    // UUID로 찾지 못했고, clerk_id 형식일 수도 있는 경우 시도
+    if (!userData) {
+      const { data: userByClerk } = await serviceClient
+        .from("users")
+        .select(selectFields)
+        .eq("clerk_id", userId)
+        .maybeSingle();
+
+      if (userByClerk) {
+        userData = { ...userByClerk, profile_image_url: null };
+      }
     }
   }
 
   if (!userData) {
+    // 디버깅: 현재 로그인한 사용자 정보 확인
+    const currentUserInfo = clerkUserId
+      ? `현재 로그인한 사용자: ${clerkUserId}`
+      : "로그인하지 않음";
+
     return (
       <div className="text-center py-16 text-instagram-text-secondary">
-        <p>사용자를 찾을 수 없습니다.</p>
+        <p className="text-lg font-semibold mb-4">사용자를 찾을 수 없습니다.</p>
+        <div className="text-sm text-muted-foreground space-y-2 max-w-md mx-auto">
+          <p>검색한 ID: {userId}</p>
+          <p>{currentUserInfo}</p>
+          <p className="mt-4 text-xs">
+            💡 팁: 사용자가 데이터베이스에 동기화되지 않았을 수 있습니다.
+            <br />
+            홈 페이지로 이동한 후 다시 시도해보세요.
+          </p>
+        </div>
       </div>
     );
   }
@@ -72,6 +117,7 @@ async function ProfileData({ userId }: { userId: string }) {
     id: userData.id,
     clerk_id: userData.clerk_id,
     name: userData.name,
+    profile_image_url: userData.profile_image_url || null,
     created_at: userData.created_at,
     posts_count: stats.posts_count || 0,
     followers_count: stats.followers_count || 0,

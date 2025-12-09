@@ -81,8 +81,8 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
 
   if (!isSignedIn) {
     return (
-      <div className="px-4 py-3 border-t border-instagram-border">
-        <p className="text-instagram-text-secondary text-sm text-center">
+      <div className="px-4 py-3 border-t border-border">
+        <p className="text-muted-foreground text-sm text-center">
           댓글을 작성하려면 로그인이 필요합니다.
         </p>
       </div>
@@ -90,7 +90,7 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-instagram-border">
+    <form onSubmit={handleSubmit} className="px-4 py-3 border-t border-border bg-card/50 dark:bg-card/30">
       <div className="flex items-center gap-2">
         <Input
           type="text"
@@ -98,7 +98,7 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="댓글 달기..."
-          className="flex-1 border-0 focus-visible:ring-0 focus-visible:ring-offset-0 text-sm"
+          className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm text-foreground placeholder:text-muted-foreground"
           disabled={submitting}
         />
         <Button
@@ -106,7 +106,7 @@ export function CommentForm({ postId, onSubmit }: CommentFormProps) {
           variant="ghost"
           size="sm"
           disabled={!content.trim() || submitting}
-          className="text-instagram-blue hover:text-instagram-blue hover:bg-transparent px-2"
+          className="text-primary hover:text-primary hover:bg-transparent px-2 disabled:opacity-50"
         >
           {submitting ? (
             "게시 중..."

@@ -11,11 +11,14 @@
 
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { UserWithStats } from "@/lib/types";
 import { FollowButton } from "./FollowButton";
 import { MessageSquare, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { EditProfileModal } from "./EditProfileModal";
 
 interface ProfileHeaderV2Props {
   user: UserWithStats;
@@ -30,6 +33,9 @@ export function ProfileHeaderV2({
   isFollowing = false,
   onFollowChange,
 }: ProfileHeaderV2Props) {
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const router = useRouter();
+
   const formatNumber = (num: number) => {
     if (num >= 1000000) {
       return `${(num / 1000000).toFixed(1)}M`;
@@ -66,17 +72,27 @@ export function ProfileHeaderV2({
             <div
               className="w-full h-full rounded-full flex items-center justify-center overflow-hidden"
               style={{
-                background: 'var(--color-bg-surface)'
+                background: user.profile_image_url ? 'transparent' : 'var(--color-bg-surface)'
               }}
             >
-              <span
-                className="text-5xl font-bold"
-                style={{
-                  color: 'var(--color-text-primary)'
-                }}
-              >
-                {user.name.charAt(0).toUpperCase()}
-              </span>
+              {user.profile_image_url ? (
+                <Image
+                  src={user.profile_image_url}
+                  alt={user.name}
+                  fill
+                  className="object-cover rounded-full"
+                  unoptimized
+                />
+              ) : (
+                <span
+                  className="text-5xl font-bold"
+                  style={{
+                    color: 'var(--color-text-primary)'
+                  }}
+                >
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -146,16 +162,38 @@ export function ProfileHeaderV2({
           {/* Pill 버튼 그룹 */}
           <div className="flex gap-2">
             {isOwnProfile ? (
-              <Button
-                variant="outline"
-                className="px-4 py-2 rounded-full"
-                style={{
-                  borderColor: 'var(--color-border-subtle)',
-                  color: 'var(--color-text-primary)'
-                }}
-              >
-                프로필 편집
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(true)}
+                  className="px-4 py-2 rounded-full border-2 font-semibold"
+                  style={{
+                    borderColor: 'var(--color-border-strong)',
+                    color: 'var(--color-text-primary)',
+                    backgroundColor: 'var(--color-bg-surface)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-brand-500)';
+                    e.currentTarget.style.color = 'var(--color-brand-500)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                    e.currentTarget.style.color = 'var(--color-text-primary)';
+                  }}
+                >
+                  프로필 편집
+                </Button>
+                <EditProfileModal
+                  open={isEditModalOpen}
+                  onOpenChange={setIsEditModalOpen}
+                  currentName={user.name}
+                  currentProfileImage={user.profile_image_url}
+                  onSuccess={() => {
+                    // Next.js router를 사용하여 서버 컴포넌트 데이터 새로고침
+                    router.refresh();
+                  }}
+                />
+              </>
             ) : (
               <>
                 <FollowButton
@@ -172,10 +210,22 @@ export function ProfileHeaderV2({
                 />
                 <Button
                   variant="outline"
-                  className="px-4 py-2 rounded-full"
+                  onClick={() => {
+                    alert("메시지 기능은 곧 제공될 예정입니다.");
+                  }}
+                  className="px-4 py-2 rounded-full border-2 font-semibold"
                   style={{
-                    borderColor: 'var(--color-border-subtle)',
-                    color: 'var(--color-text-primary)'
+                    borderColor: 'var(--color-border-strong)',
+                    color: 'var(--color-text-primary)',
+                    backgroundColor: 'var(--color-bg-surface)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-brand-500)';
+                    e.currentTarget.style.color = 'var(--color-brand-500)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                    e.currentTarget.style.color = 'var(--color-text-primary)';
                   }}
                 >
                   <MessageSquare className="w-4 h-4 mr-2" />
@@ -183,10 +233,19 @@ export function ProfileHeaderV2({
                 </Button>
                 <Button
                   variant="outline"
-                  className="px-4 py-2 rounded-full"
+                  className="px-4 py-2 rounded-full border-2"
                   style={{
-                    borderColor: 'var(--color-border-subtle)',
-                    color: 'var(--color-text-primary)'
+                    borderColor: 'var(--color-border-strong)',
+                    color: 'var(--color-text-primary)',
+                    backgroundColor: 'var(--color-bg-surface)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                    e.currentTarget.style.backgroundColor = 'var(--color-bg-subtle)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'var(--color-border-strong)';
+                    e.currentTarget.style.backgroundColor = 'var(--color-bg-surface)';
                   }}
                 >
                   <MoreHorizontal className="w-4 h-4" />
@@ -210,4 +269,5 @@ export function ProfileHeaderV2({
     </div>
   );
 }
+
 
