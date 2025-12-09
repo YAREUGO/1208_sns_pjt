@@ -11,7 +11,7 @@
 !.yarn/versions
 
 # pnpm
-pnpm-lock.yaml
+# pnpm-lock.yaml은 반드시 git에 포함해야 함 (Vercel 배포용)
 
 # testing
 /coverage
