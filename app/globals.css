@@ -49,6 +49,13 @@
   --color-instagram-text-primary: var(--instagram-text-primary);
   --color-instagram-text-secondary: var(--instagram-text-secondary);
   --color-instagram-like: var(--instagram-like);
+  
+  /* 새로운 디자인 토큰 (2025 SNS) */
+  --color-brand-500: var(--color-brand-500);
+  --color-accent-mint: var(--color-accent-mint);
+  --color-accent-coral: var(--color-accent-coral);
+  --radius-pill: var(--radius-pill);
+  --shadow-glass: var(--shadow-glass);
 }
 
 :root {
@@ -104,6 +111,125 @@
   --instagram-font-normal: 400;
   --instagram-font-semibold: 600;
   --instagram-font-bold: 700;
+  
+  /* ============================================
+     새로운 디자인 토큰 시스템 (2025 SNS)
+     ============================================ */
+  
+  /* --- 1. Primitive Colors --- */
+  /* Neutral Scale */
+  --color-neutral-0:   #050509;
+  --color-neutral-50:  #0B0B10;
+  --color-neutral-100: #111119;
+  --color-neutral-200: #181821;
+  --color-neutral-300: #242434;
+  --color-neutral-500: #4B4B63;
+  --color-neutral-700: #8E8EA3;
+  --color-neutral-900: #F5F5FA;
+
+  /* Brand Colors (보라 계열) */
+  --color-brand-50:  #F4ECFF;
+  --color-brand-100: #E1D2FF;
+  --color-brand-300: #B593FF;
+  --color-brand-500: #8A4DFF;
+  --color-brand-600: #6C34E6;
+  --color-brand-700: #4B23B3;
+
+  /* Accent Colors */
+  --color-accent-mint:   #4FF3C4;
+  --color-accent-coral:  #FF6B81;
+  --color-danger:        #FF4B6A;
+  --color-success:       #3AD97A;
+
+  /* --- 2. Semantic Colors (Dark Mode Default) --- */
+  /* Backgrounds */
+  --color-bg-app:        var(--color-neutral-0);
+  --color-bg-surface:    rgba(15, 15, 25, 0.92);
+  --color-bg-elevated:   rgba(22, 22, 38, 0.96);
+  --color-bg-subtle:     rgba(255, 255, 255, 0.03);
+
+  /* Borders */
+  --color-border-subtle: rgba(255, 255, 255, 0.06);
+  --color-border-strong: rgba(255, 255, 255, 0.12);
+
+  /* Text */
+  --color-text-primary:  #FFFFFF;
+  --color-text-secondary:#B1B1C7;
+  --color-text-muted:    #757591;
+  --color-text-danger:   var(--color-danger);
+  --color-text-success:  var(--color-success);
+
+  /* Brand Usage */
+  --color-brand-solid:       var(--color-brand-500);
+  --color-brand-soft:        rgba(138, 77, 255, 0.18);
+  --color-brand-gradient:    linear-gradient(135deg, #8A4DFF 0%, #4FF3C4 60%, #FF6B81 100%);
+  --color-glass-highlight:   rgba(255, 255, 255, 0.08);
+
+  /* --- 3. Typography Tokens --- */
+  /* Font Families */
+  --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+  --font-display: "SF Pro Display", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Font Sizes */
+  --font-size-xs:   11px;
+  --font-size-sm:   13px;
+  --font-size-md:   15px;
+  --font-size-lg:   17px;
+  --font-size-xl:   20px;
+  --font-size-2xl:  24px;
+
+  /* Line Heights */
+  --line-tight:   1.1;
+  --line-snug:    1.2;
+  --line-normal:  1.4;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium:  500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:    700;
+
+  /* Semantic Text Styles */
+  --text-title-lg-size:    var(--font-size-2xl);
+  --text-title-lg-weight:  var(--font-weight-bold);
+  --text-title-lg-line:    var(--line-tight);
+
+  --text-username-size:    var(--font-size-md);
+  --text-username-weight:  var(--font-weight-semibold);
+  --text-username-line:    var(--line-snug);
+
+  --text-metadata-size:    var(--font-size-xs);
+  --text-metadata-weight:  var(--font-weight-medium);
+  --text-metadata-line:    var(--line-normal);
+
+  --text-body-size:        var(--font-size-sm);
+  --text-body-weight:      var(--font-weight-regular);
+  --text-body-line:        var(--line-normal);
+
+  /* --- 4. Spacing Tokens --- */
+  --space-0:    0;
+  --space-1:    0.25rem;
+  --space-2:    0.5rem;
+  --space-3:    0.75rem;
+  --space-4:    1rem;
+  --space-5:    1.25rem;
+  --space-6:    1.5rem;
+  --space-8:    2rem;
+  --space-10:   2.5rem;
+
+  /* --- 5. Radius Tokens --- */
+  --radius-xs:    6px;
+  --radius-sm:    10px;
+  --radius-md:    14px;
+  --radius-lg:    18px;
+  --radius-pill:  999px;
+  --radius-full:  9999px;
+
+  /* --- 6. Shadow Tokens --- */
+  --shadow-soft:      0 18px 45px rgba(0, 0, 0, 0.35);
+  --shadow-soft-up:   0 -10px 35px rgba(0, 0, 0, 0.45);
+  --shadow-outline:   0 0 0 1px rgba(255, 255, 255, 0.04);
+  --shadow-glass:     0 24px 60px rgba(5, 5, 15, 0.85);
 }
 
 .dark {
@@ -172,6 +298,179 @@
   .bg-modern-gradient-2 {
     background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
   }
+
+  /* Glassmorphism 유틸리티 */
+  .glass-card {
+    background: var(--color-bg-surface);
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+    border: 1px solid var(--color-border-subtle);
+    box-shadow: var(--shadow-glass);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 28px 72px rgba(5, 5, 15, 0.95);
+  }
+}
+
+/* ============================================
+   Light Mode Override
+   ============================================ */
+@layer base {
+  .theme-light,
+  :root:not(.dark) {
+    --color-bg-app:        #F8F8FF;
+    --color-bg-surface:    #FFFFFF;
+    --color-bg-elevated:   #FFFFFF;
+    --color-bg-subtle:     #F2F2FF;
+
+    --color-text-primary:  #14141F;
+    --color-text-secondary:#4B4B63;
+    --color-text-muted:    #757591;
+
+    --color-border-subtle: rgba(20, 20, 40, 0.06);
+    --color-border-strong: rgba(20, 20, 40, 0.14);
+  }
+
+  .theme-light .glass-card,
+  :root:not(.dark) .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ============================================
+   Component Tokens
+   ============================================ */
+@layer components {
+  /* Feed Card */
+  .feed-card {
+    background: var(--color-bg-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    box-shadow: var(--shadow-glass);
+    border: 1px solid var(--color-border-subtle);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .feed-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 28px 72px rgba(5, 5, 15, 0.95);
+  }
+
+  .feed-card-header {
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  .feed-card-username {
+    font-family: var(--font-display);
+    font-size: var(--text-username-size);
+    font-weight: var(--text-username-weight);
+    line-height: var(--text-username-line);
+    letter-spacing: 0.02em;
+    color: var(--color-text-primary);
+  }
+
+  .feed-card-meta {
+    font-size: var(--text-metadata-size);
+    font-weight: var(--text-metadata-weight);
+    line-height: var(--text-metadata-line);
+    color: var(--color-text-muted);
+  }
+
+  .feed-card-actions {
+    padding-top: var(--space-3);
+    margin-top: var(--space-3);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Pill Toggle */
+  .pill-toggle {
+    border-radius: var(--radius-pill);
+    padding: 0.25rem 0.75rem;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    background: var(--color-bg-subtle);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    transition: all 0.2s ease;
+  }
+
+  .pill-toggle:hover {
+    background: var(--color-bg-elevated);
+    border-color: var(--color-border-strong);
+  }
+
+  .pill-toggle--active {
+    background-image: var(--color-brand-gradient);
+    color: var(--color-neutral-0);
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(138, 77, 255, 0.3);
+  }
+
+  /* CTA Button */
+  .btn-cta {
+    background-image: var(--color-brand-gradient);
+    color: var(--color-neutral-0);
+    border-radius: var(--radius-pill);
+    padding: 0.75rem 1.5rem;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-sm);
+    border: none;
+    box-shadow: 0 4px 16px rgba(138, 77, 255, 0.4);
+    transition: all 0.3s ease;
+  }
+
+  .btn-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(138, 77, 255, 0.5);
+  }
+
+  .btn-cta:active {
+    transform: translateY(0);
+  }
+
+  /* Follow Chip */
+  .chip-follow {
+    border-radius: var(--radius-pill);
+    padding: 0.375rem 0.875rem;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    background-image: var(--color-brand-gradient);
+    color: var(--color-neutral-0);
+    border: none;
+    transition: all 0.2s ease;
+  }
+
+  .chip-follow:hover {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+
+  /* Content Type Badge */
+  .badge-content-type {
+    position: absolute;
+    top: var(--space-3);
+    left: var(--space-3);
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: white;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 }
 
 @keyframes shimmer {
@@ -196,4 +495,45 @@
     opacity: 0;
     transform: scale(1);
   }
+}
+
+@keyframes heartExplosion {
+  0% {
+    opacity: 0;
+    transform: scale(0) rotate(-15deg);
+    filter: blur(0px);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.5) rotate(5deg);
+    filter: blur(2px);
+  }
+  60% {
+    transform: scale(1.2) rotate(-3deg);
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1) rotate(0deg);
+    filter: blur(0px);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out;
+}
+
+.animate-heart-explosion {
+  animation: heartExplosion 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
