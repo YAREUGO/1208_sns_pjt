@@ -138,22 +138,37 @@ export function CommentList({
           >
             <div className="flex-1 min-w-0">
               <p className="text-sm">
-                <span className="font-instagram-semibold text-white dark:text-neutral-100">
+                <span 
+                  className="font-semibold"
+                  style={{ color: '#FFFFFF' }}
+                >
                   {comment.user.name}
                 </span>{" "}
-                <span className="text-white/90 dark:text-neutral-200">
+                <span style={{ color: 'rgba(255, 255, 255, 0.95)' }}>
                   {comment.content}
                 </span>
               </p>
               <div className="flex items-center gap-3 mt-1">
-                <span className="text-white/70 dark:text-neutral-400 text-xs">
+                <span 
+                  className="text-xs"
+                  style={{ color: 'var(--color-text-secondary)' }}
+                >
                   {timeAgo}
                 </span>
                 {isOwner && (
                   <button
                     onClick={() => handleDelete(comment.id)}
                     disabled={deletingIds.has(comment.id)}
-                    className="text-white/70 dark:text-neutral-400 text-xs hover:text-red-400 transition-colors disabled:opacity-50"
+                    className="text-xs transition-colors disabled:opacity-50"
+                    style={{ 
+                      color: 'var(--color-text-secondary)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--color-text-danger)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = 'var(--color-text-secondary)';
+                    }}
                   >
                     {deletingIds.has(comment.id) ? "삭제 중..." : "삭제"}
                   </button>
@@ -168,7 +183,14 @@ export function CommentList({
       {hasMoreComments && (
         <button
           onClick={() => setShowAllComments(true)}
-          className="text-white/80 dark:text-neutral-300 text-sm mt-2 mb-1 hover:text-white dark:hover:text-neutral-100 transition-colors"
+          className="text-sm mt-2 mb-1 transition-colors"
+          style={{ color: 'var(--color-text-secondary)' }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.color = 'var(--color-text-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.color = 'var(--color-text-secondary)';
+          }}
         >
           댓글 {comments.length - limit}개 더 보기
         </button>
