@@ -9,6 +9,9 @@
  * - 본인 프로필인지 확인하여 버튼 분기
  */
 
+// Vercel 배포 시 클라이언트 참조 매니페스트 문제 해결을 위한 동적 렌더링 강제
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import { ProfilePageClient } from "@/components/profile/ProfilePageClient";
 import { createClient } from "@/lib/supabase/server";

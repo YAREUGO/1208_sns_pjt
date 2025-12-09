@@ -6,13 +6,11 @@
  * PostFeed 컴포넌트를 사용하여 무한 스크롤로 게시물을 로드합니다.
  */
 
+"use client";
+
 import { PostFeed } from "@/components/post/PostFeed";
 
 export default function HomePage() {
-  return (
-    <div className="min-h-screen bg-modern-gradient">
-      <PostFeed />
-    </div>
-  );
+  return <PostFeed useV2={true} />;
 }
 

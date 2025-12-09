@@ -2,17 +2,16 @@
  * @file app/(main)/layout.tsx
  * @description 메인 레이아웃 컴포넌트
  *
- * Instagram 스타일 레이아웃:
- * - Desktop: Sidebar (244px) + Main Content (최대 630px 중앙 정렬)
- * - Tablet: Sidebar (72px 아이콘만) + Main Content
- * - Mobile: Header (60px) + Main Content + BottomNav (50px)
+ * 2025 스타일 레이아웃 (V2):
+ * - Desktop: Sidebar (280px) + Main Content (최대 630px 중앙 정렬)
+ * - Mobile: Header (60px) + Main Content + BottomNav (60px)
  *
- * 배경색: #FAFAFA
+ * 배경색: var(--color-bg-app)
  */
 
-import { Sidebar } from "@/components/layout/Sidebar";
+import { SidebarV2 } from "@/components/layout/SidebarV2";
 import { Header } from "@/components/layout/Header";
-import { BottomNav } from "@/components/layout/BottomNav";
+import { BottomNavV2 } from "@/components/layout/BottomNavV2";
 import { cn } from "@/lib/utils";
 
 export default function MainLayout({
@@ -21,9 +20,9 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-modern-gradient">
+    <div className="min-h-screen" style={{ background: 'var(--color-bg-app)' }}>
       {/* Sidebar (Desktop/Tablet) */}
-      <Sidebar />
+      <SidebarV2 />
 
       {/* Header (Mobile only) */}
       <Header />
@@ -32,12 +31,12 @@ export default function MainLayout({
       <main
         className={cn(
           "transition-all duration-200",
-          // Desktop: Sidebar 너비만큼 왼쪽 여백
-          "md:ml-[72px] lg:ml-[244px]",
+          // Desktop: Sidebar 너비만큼 왼쪽 여백 (V2: 280px)
+          "md:ml-[280px]",
           // Mobile: Header 높이만큼 상단 여백
           "pt-[60px] md:pt-0",
-          // Mobile: BottomNav 높이만큼 하단 여백
-          "pb-[50px] md:pb-0"
+          // Mobile: BottomNav 높이만큼 하단 여백 (V2: 60px)
+          "pb-[60px] md:pb-0"
         )}
       >
         <div className="max-w-[630px] mx-auto px-4 py-8">
@@ -46,7 +45,7 @@ export default function MainLayout({
       </main>
 
       {/* BottomNav (Mobile only) */}
-      <BottomNav />
+      <BottomNavV2 />
     </div>
   );
 }

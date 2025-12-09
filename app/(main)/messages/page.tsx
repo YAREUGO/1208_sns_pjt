@@ -3,6 +3,9 @@
  * @description 메시지 페이지 (향후 구현)
  */
 
+// Vercel 배포 시 클라이언트 참조 매니페스트 문제 해결을 위한 동적 렌더링 강제
+export const dynamic = "force-dynamic";
+
 export default function MessagesPage() {
   return (
     <div className="min-h-screen flex items-center justify-center">

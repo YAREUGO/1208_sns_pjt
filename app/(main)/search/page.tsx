@@ -10,6 +10,9 @@
 
 import { SearchPageClient } from "@/components/search/SearchPageClient";
 
+// Vercel 배포 시 클라이언트 참조 매니페스트 문제 해결을 위한 동적 렌더링 강제
+export const dynamic = "force-dynamic";
+
 export default function SearchPage() {
   return <SearchPageClient />;
 }
