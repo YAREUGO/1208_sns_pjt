@@ -12,6 +12,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { PostCard } from "./PostCard";
+import { PostCardV2 } from "./PostCardV2";
 import { PostCardSkeleton } from "./PostCardSkeleton";
 import { PostModal } from "./PostModal";
 import { PostWithUser } from "@/lib/types";
@@ -19,9 +20,10 @@ import { PostWithUser } from "@/lib/types";
 interface PostFeedProps {
   userId?: string; // 특정 사용자의 게시물만 조회 (프로필 페이지용)
   initialPosts?: PostWithUser[];
+  useV2?: boolean; // V2 컴포넌트 사용 여부 (기본값: true)
 }
 
-export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
+export function PostFeed({ userId, initialPosts = [], useV2 = true }: PostFeedProps) {
   const [posts, setPosts] = useState<PostWithUser[]>(initialPosts);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -127,16 +129,29 @@ export function PostFeed({ userId, initialPosts = [] }: PostFeedProps) {
   return (
     <div className="space-y-4">
       {/* 게시물 목록 */}
-      {posts.map((post) => (
-        <PostCard
-          key={post.id}
-          post={post}
-          onLike={handleLike}
-          onComment={handleComment}
-          onClick={handlePostClick}
-          onDelete={handleDelete}
-        />
-      ))}
+      {posts.map((post, index) =>
+        useV2 ? (
+          <PostCardV2
+            key={post.id}
+            post={post}
+            index={index}
+            onLike={handleLike}
+            onComment={handleComment}
+            onClick={handlePostClick}
+            onDelete={handleDelete}
+            isAIRecommended={Math.random() > 0.9} // 예시: 10% 확률로 AI 추천
+          />
+        ) : (
+          <PostCard
+            key={post.id}
+            post={post}
+            onLike={handleLike}
+            onComment={handleComment}
+            onClick={handlePostClick}
+            onDelete={handleDelete}
+          />
+        )
+      )}
 
       {/* 로딩 스켈레톤 */}
       {loading && (

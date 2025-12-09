@@ -8,15 +8,19 @@
 
 import { PostFeed } from "@/components/post/PostFeed";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { SidebarV2 } from "@/components/layout/SidebarV2";
 import { Header } from "@/components/layout/Header";
 import { BottomNav } from "@/components/layout/BottomNav";
+import { BottomNavV2 } from "@/components/layout/BottomNavV2";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
+  const useV2Design = true; // V2 디자인 사용 여부
+
   return (
-    <div className="min-h-screen bg-modern-gradient">
+    <div className="min-h-screen" style={{ background: 'var(--color-bg-app)' }}>
       {/* Sidebar (Desktop/Tablet) */}
-      <Sidebar />
+      {useV2Design ? <SidebarV2 /> : <Sidebar />}
 
       {/* Header (Mobile only) */}
       <Header />
@@ -26,20 +30,20 @@ export default function HomePage() {
         className={cn(
           "transition-all duration-200",
           // Desktop: Sidebar 너비만큼 왼쪽 여백
-          "md:ml-[72px] lg:ml-[244px]",
+          useV2Design ? "md:ml-[280px]" : "md:ml-[72px] lg:ml-[244px]",
           // Mobile: Header 높이만큼 상단 여백
           "pt-[60px] md:pt-0",
           // Mobile: BottomNav 높이만큼 하단 여백
-          "pb-[50px] md:pb-0"
+          useV2Design ? "pb-[60px] md:pb-0" : "pb-[50px] md:pb-0"
         )}
       >
         <div className="max-w-[630px] mx-auto px-4 py-8">
-          <PostFeed />
+          <PostFeed useV2={useV2Design} />
         </div>
       </main>
 
       {/* BottomNav (Mobile only) */}
-      <BottomNav />
+      {useV2Design ? <BottomNavV2 /> : <BottomNav />}
     </div>
   );
 }
