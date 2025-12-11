@@ -14,6 +14,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { Suspense } from "react";
 
+// 동적 렌더링 강제 (Supabase 클라이언트가 headers()를 사용하므로)
+export const dynamic = "force-dynamic";
+
 async function InstrumentsData() {
   const supabase = await createClient();
   const { data: instruments, error } = await supabase
